@@ -19,7 +19,7 @@
               @click="center=m.position"
               :draggable="true"
               :clickable="true"
-              @drag="updateCoordinates"
+              @dragend="updateCoordinates"
             ></gmap-marker>
           </gmap-map>
           </v-card>
