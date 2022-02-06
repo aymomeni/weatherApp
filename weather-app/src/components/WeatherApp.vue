@@ -1,7 +1,11 @@
 <template>
     <v-container>
       <v-row>
-        <v-col>
+        <v-col
+          cols="12"
+          lg="8"
+          xl="8"
+        >
           <v-card>
           <gmap-map
               :zoom="5"    
@@ -20,23 +24,27 @@
           </gmap-map>
           </v-card>
         </v-col>
-        <v-col>
-        <v-simple-table
-          dense
-          light
+        <v-col
+          cols="12"
+          lg="4"
+          xl="4"
         >
-          <template v-slot:default>
-            <tbody>
-              <tr
-                v-for="item in weatherData"
-                :key="item.name"
-              >
-                <td>{{ item.type }}</td>
-                <td>{{ item.value }}</td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
+          <v-simple-table
+            dense
+            light
+          >
+            <template v-slot:default>
+              <tbody>
+                <tr
+                  v-for="item in weatherData"
+                  :key="item.name"
+                >
+                  <td>{{ item.type }}</td>
+                  <td>{{ item.value }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </v-col>
       </v-row>
     </v-container>
@@ -82,18 +90,19 @@ export default {
       const weatherResponse = await axios.get(url);
       console.log('>>> weatherResponse', weatherResponse);
       // TODO: grab relevant info and store in this weather object
-      //res.status(200).json(weatherResponse.data)
-
       // name of location
-      this.weatherData = [];
-      this.weatherData.push({type: 'Location', value: weatherResponse.data.name});
-      this.weatherData.push({type: 'Condition', value: weatherResponse.data.weather[0].description});
-      this.weatherData.push({type: 'Temerature', value: weatherResponse.data.main.temp + ' °F'}); // TODO: convert to farenheit
-      this.weatherData.push({type: 'Humidity', value: weatherResponse.data.main.humidity + ' %'});
-      this.weatherData.push({type: 'Sunrise', value: moment.unix(weatherResponse.data.sys.sunrise).format("HH:mm") + ' am' }); // TODO: convert to local time
-      this.weatherData.push({type: 'Sunset', value: moment.unix(weatherResponse.data.sys.sunset).format("HH:mm") + ' pm' });
-      this.weatherData.push({type: 'Wind speed', value: weatherResponse.data.wind.speed + ' mph'});
-      this.weatherData.push({type: 'Wind direction', value: weatherResponse.data.wind.deg + ' degrees' });
+      if(weatherResponse.status === 200) {
+        this.weatherData = [];
+        this.weatherData.push({type: 'Location', value: weatherResponse.data.name});
+        this.weatherData.push({type: 'Condition', value: weatherResponse.data.weather[0].description});
+        this.weatherData.push({type: 'Temerature', value: weatherResponse.data.main.temp + ' °F'}); // TODO: convert to farenheit
+        this.weatherData.push({type: 'Humidity', value: weatherResponse.data.main.humidity + ' %'});
+        this.weatherData.push({type: 'Sunrise', value: moment.unix(weatherResponse.data.sys.sunrise).format("HH:mm") + ' am' }); // TODO: convert to local time
+        this.weatherData.push({type: 'Sunset', value: moment.unix(weatherResponse.data.sys.sunset).format("HH:mm") + ' pm' });
+        this.weatherData.push({type: 'Wind speed', value: weatherResponse.data.wind.speed + ' mph'});
+        this.weatherData.push({type: 'Wind direction', value: weatherResponse.data.wind.deg + ' degrees' });
+      }
+
       return ;
     },
     initMarker(loc) {
