@@ -12,7 +12,7 @@
       </div>
       <br>
       <gmap-map
-          :zoom="14"    
+          :zoom="5"    
           :center="center"
           style="width:100%;  height: 600px;"
         >
@@ -33,17 +33,17 @@ export default {
   data() {
     return {
       center: { 
-        lat: 39.7837304,
-        lng: -100.4458825
+        lat: 39.7392,
+        lng: -104.9903
       },
-      locationMarkers: [],
+      locationMarkers: [ { position: { lat: 40.6847488, lng: -111.8928896 } } ],
       locPlaces: [],
       existingPlace: null
     };
   },
  
   mounted() {
-    this.locateGeoLocation();
+    // this.locateGeoLocation();
   },
  
   methods: {
