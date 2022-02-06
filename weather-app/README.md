@@ -1,5 +1,6 @@
 # weather-app
-
+A simple weather app that utilizes vue2-google-maps and http://openweathermap.org/'s api to fetch current weather data.
+Libraries: Vuetify, Google-maps, Moment, Axios
 ## Project setup
 ```
 npm install
