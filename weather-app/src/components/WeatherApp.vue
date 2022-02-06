@@ -14,6 +14,7 @@
               :position="m.position"
               @click="center=m.position"
               :draggable="true"
+              :clickable="true"
               @drag="updateCoordinates"
             ></gmap-marker>
           </gmap-map>
@@ -44,6 +45,7 @@
  
 <script>
 import axios from 'axios';
+// import moment from 'moment'
 
 export default {
   name: "WeatherApp",
@@ -75,7 +77,7 @@ export default {
       this.getWeatherInformation();
     },
     async getWeatherInformation() {
-      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${this.tempLocation.lat}&lon=${this.tempLocation.lng}&appid=6d78fcf2b6ddf4f00ae680a37639b3d6`;
+      const url = `https://api.openweathermap.org/data/2.5/weather?units=imperial&lat=${this.tempLocation.lat}&lon=${this.tempLocation.lng}&appid=6d78fcf2b6ddf4f00ae680a37639b3d6`;
 
       const weatherResponse = await axios.get(url);
       console.log('>>> weatherResponse', weatherResponse);
@@ -86,7 +88,7 @@ export default {
       this.weatherData = [];
       this.weatherData.push({type: 'Location', value: weatherResponse.data.name});
       this.weatherData.push({type: 'Condition', value: weatherResponse.data.weather[0].description});
-      this.weatherData.push({type: 'Temerature', value: weatherResponse.data.main.temp}); // TODO: convert to farenheit
+      this.weatherData.push({type: 'Temerature', value: weatherResponse.data.main.temp + ' °F'}); // TODO: convert to farenheit
       this.weatherData.push({type: 'Humidity', value: weatherResponse.data.main.humidity + ' %'});
       this.weatherData.push({type: 'Sunrise', value: weatherResponse.data.sys.sunrise }); // TODO: convert to local time
       this.weatherData.push({type: 'Sunset', value: weatherResponse.data.sys.sunset });
