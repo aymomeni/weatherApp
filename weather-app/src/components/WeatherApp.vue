@@ -63,7 +63,7 @@ export default {
         lat: 39.7392,
         lng: -104.9903
       },
-      tempLocation: { lat: 40.6847488, lng: -111.8928896 },
+      markerLocation: { lat: 40.6847488, lng: -111.8928896 },
       locationMarkers: [ { position: { lat: 40.6847488, lng: -111.8928896 } } ],
       weatherData: [],
       locPlaces: [],
@@ -72,20 +72,20 @@ export default {
   },
  
   mounted() {
-    // this.locateGeoLocation();
+    // setup initial weather information
     this.getWeatherInformation();
   },
  
   methods: {
     updateCoordinates(location) {
-      this.tempLocation = {
+      this.markerLocation = {
           lat: location.latLng.lat(),
           lng: location.latLng.lng(),
       };
       this.getWeatherInformation();
     },
     async getWeatherInformation() {
-      const url = `https://api.openweathermap.org/data/2.5/weather?units=imperial&lat=${this.tempLocation.lat}&lon=${this.tempLocation.lng}&appid=6d78fcf2b6ddf4f00ae680a37639b3d6`;
+      const url = `https://api.openweathermap.org/data/2.5/weather?units=imperial&lat=${this.markerLocation.lat}&lon=${this.markerLocation.lng}&appid=6d78fcf2b6ddf4f00ae680a37639b3d6`;
 
       const weatherResponse = await axios.get(url);
       console.log('>>> weatherResponse', weatherResponse);
@@ -104,29 +104,6 @@ export default {
       }
 
       return ;
-    },
-    initMarker(loc) {
-      this.existingPlace = loc;
-    },
-    addLocationMarker() {
-      if (this.existingPlace) {
-        const marker = {
-          lat: this.existingPlace.geometry.location.lat(),
-          lng: this.existingPlace.geometry.location.lng()
-        };
-        this.locationMarkers.push({ position: marker });
-        this.locPlaces.push(this.existingPlace);
-        this.center = marker;
-        this.existingPlace = null;
-      }
-    },
-    locateGeoLocation: function() {
-      navigator.geolocation.getCurrentPosition(res => {
-        this.center = {
-          lat: res.coords.latitude,
-          lng: res.coords.longitude
-        };
-      });
     }
   }
 };
