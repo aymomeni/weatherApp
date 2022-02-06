@@ -14,6 +14,7 @@
               :position="m.position"
               @click="center=m.position"
               :draggable="true"
+              @drag="updateCoordinates"
             ></gmap-marker>
           </gmap-map>
           </v-card>
@@ -55,16 +56,6 @@ export default {
       tempLocation: { lat: 40.6847488, lng: -111.8928896 },
       locationMarkers: [ { position: { lat: 40.6847488, lng: -111.8928896 } } ],
       weatherData: [],
-      // {
-      //   location: 'N/A',
-      //   condition: 'N/A',
-      //   temperature: 'N/A',
-      //   humidity: 'N/A',
-      //   sunrise: 'N/A',
-      //   sunset: 'Time unavailable',
-      //   windSpeed: 'WindSpeed unabailable',
-      //   windDirection: 'N/A'
-      // },
       locPlaces: [],
       existingPlace: null
     };
@@ -76,6 +67,13 @@ export default {
   },
  
   methods: {
+    updateCoordinates(location) {
+      this.tempLocation = {
+          lat: location.latLng.lat(),
+          lng: location.latLng.lng(),
+      };
+      this.getWeatherInformation();
+    },
     async getWeatherInformation() {
       const url = `https://api.openweathermap.org/data/2.5/weather?lat=${this.tempLocation.lat}&lon=${this.tempLocation.lng}&appid=6d78fcf2b6ddf4f00ae680a37639b3d6`;
 
@@ -85,6 +83,7 @@ export default {
       //res.status(200).json(weatherResponse.data)
 
       // name of location
+      this.weatherData = [];
       this.weatherData.push({type: 'Location', value: weatherResponse.data.name});
       this.weatherData.push({type: 'Condition', value: weatherResponse.data.weather[0].description});
       this.weatherData.push({type: 'Temerature', value: weatherResponse.data.main.temp}); // TODO: convert to farenheit
