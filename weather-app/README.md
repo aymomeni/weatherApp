@@ -22,3 +22,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Resources
+https://www.positronx.io/how-to-implement-and-show-google-map-in-vue-js-app/
