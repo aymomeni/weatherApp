@@ -23,10 +23,10 @@
             <thead>
               <tr>
                 <th class="text-left">
-                  Name
+                  Information Type
                 </th>
                 <th class="text-left">
-                  Calories
+                  Value
                 </th>
               </tr>
             </thead>
@@ -35,8 +35,8 @@
                 v-for="item in weatherData"
                 :key="item.name"
               >
-                <td>{{ item.name }}</td>
-                <td>{{ item.calories }}</td>
+                <td>{{ item.type }}</td>
+                <td>{{ item.value }}</td>
               </tr>
             </tbody>
           </template>
@@ -60,16 +60,17 @@ export default {
       },
       tempLocation: { lat: 40.6847488, lng: -111.8928896 },
       locationMarkers: [ { position: { lat: 40.6847488, lng: -111.8928896 } } ],
-      weatherData: {
-        location: 'N/A',
-        condition: 'N/A',
-        temperature: 'N/A',
-        humidity: 'N/A',
-        sunrise: 'N/A',
-        sunset: 'Time unavailable',
-        windSpeed: 'WindSpeed unabailable',
-        windDirection: 'N/A'
-      },
+      weatherData: [],
+      // {
+      //   location: 'N/A',
+      //   condition: 'N/A',
+      //   temperature: 'N/A',
+      //   humidity: 'N/A',
+      //   sunrise: 'N/A',
+      //   sunset: 'Time unavailable',
+      //   windSpeed: 'WindSpeed unabailable',
+      //   windDirection: 'N/A'
+      // },
       locPlaces: [],
       existingPlace: null
     };
@@ -86,7 +87,13 @@ export default {
 
       const weatherResponse = await axios.get(url);
       console.log('>>> weatherResponse', weatherResponse);
+      // TODO: grab relevant info and store in this weather object
       //res.status(200).json(weatherResponse.data)
+
+      // name of location
+      this.weatherData.push({type: 'Location', value: weatherResponse.data.name});
+      this.weatherData.push({type: 'Condition', value: weatherResponse.data.weather[0].description});
+      this.weatherData.push({type: 'Temerature', value: weatherResponse.data.main.temp}); // TODO: convert to farenheit
       return ;
     },
     initMarker(loc) {
