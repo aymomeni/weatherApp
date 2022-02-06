@@ -1,5 +1,9 @@
 <template>
   <v-app id="app">
+    <v-app-bar dense app elevation="4">
+      <v-app-bar-icon><v-icon class="mr-2">mdi-cloud-outline</v-icon></v-app-bar-icon>
+      <v-app-bar-title>WeatherApp</v-app-bar-title>
+    </v-app-bar>
     <v-main>
       <WeatherApp/>
     </v-main>

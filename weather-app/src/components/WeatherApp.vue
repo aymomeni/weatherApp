@@ -29,6 +29,11 @@
           lg="4"
           xl="4"
         >
+          <v-progress-linear
+            v-if="fetchingWeatherData"
+            indeterminate
+            color="yellow darken-2"
+          ></v-progress-linear>
           <v-simple-table
             dense
             light
@@ -63,6 +68,7 @@ export default {
         lat: 39.7392,
         lng: -104.9903
       },
+      fetchingWeatherData: false,
       markerLocation: { lat: 40.6847488, lng: -111.8928896 },
       locationMarkers: [ { position: { lat: 40.6847488, lng: -111.8928896 } } ],
       weatherData: [],
@@ -86,12 +92,10 @@ export default {
     },
     async getWeatherInformation() {
       const url = `https://api.openweathermap.org/data/2.5/weather?units=imperial&lat=${this.markerLocation.lat}&lon=${this.markerLocation.lng}&appid=6d78fcf2b6ddf4f00ae680a37639b3d6`;
-
-      const weatherResponse = await axios.get(url);
-      console.log('>>> weatherResponse', weatherResponse);
-      // TODO: grab relevant info and store in this weather object
-      // name of location
-      if(weatherResponse.status === 200) {
+      this.fetchingWeatherData = true;
+      
+      await axios.get(url).then(res => {
+        let weatherResponse = res;
         this.weatherData = [];
         this.weatherData.push({type: 'Location', value: weatherResponse.data.name});
         this.weatherData.push({type: 'Condition', value: weatherResponse.data.weather[0].description});
@@ -101,9 +105,9 @@ export default {
         this.weatherData.push({type: 'Sunset', value: moment.unix(weatherResponse.data.sys.sunset).format("HH:mm") + ' pm' });
         this.weatherData.push({type: 'Wind speed', value: weatherResponse.data.wind.speed + ' mph'});
         this.weatherData.push({type: 'Wind direction', value: weatherResponse.data.wind.deg + ' degrees' });
-      }
-
-      return ;
+      }).finally(()=> {
+        this.fetchingWeatherData = false;
+      });
     }
   }
 };
