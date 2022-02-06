@@ -13,23 +13,17 @@
               v-for="(m, index) in locationMarkers"
               :position="m.position"
               @click="center=m.position"
+              :draggable="true"
             ></gmap-marker>
           </gmap-map>
           </v-card>
         </v-col>
         <v-col>
-        <v-simple-table dense>
+        <v-simple-table
+          dense
+          light
+        >
           <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="text-left">
-                  Information Type
-                </th>
-                <th class="text-left">
-                  Value
-                </th>
-              </tr>
-            </thead>
             <tbody>
               <tr
                 v-for="item in weatherData"
@@ -94,6 +88,11 @@ export default {
       this.weatherData.push({type: 'Location', value: weatherResponse.data.name});
       this.weatherData.push({type: 'Condition', value: weatherResponse.data.weather[0].description});
       this.weatherData.push({type: 'Temerature', value: weatherResponse.data.main.temp}); // TODO: convert to farenheit
+      this.weatherData.push({type: 'Humidity', value: weatherResponse.data.main.humidity + ' %'});
+      this.weatherData.push({type: 'Sunrise', value: weatherResponse.data.sys.sunrise }); // TODO: convert to local time
+      this.weatherData.push({type: 'Sunset', value: weatherResponse.data.sys.sunset });
+      this.weatherData.push({type: 'Wind speed', value: weatherResponse.data.wind.speed + ' mph'});
+      this.weatherData.push({type: 'Wind direction', value: weatherResponse.data.wind.deg + ' degrees' });
       return ;
     },
     initMarker(loc) {
