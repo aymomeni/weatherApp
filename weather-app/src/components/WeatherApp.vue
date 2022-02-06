@@ -45,7 +45,7 @@
  
 <script>
 import axios from 'axios';
-// import moment from 'moment'
+import moment from 'moment'
 
 export default {
   name: "WeatherApp",
@@ -90,8 +90,8 @@ export default {
       this.weatherData.push({type: 'Condition', value: weatherResponse.data.weather[0].description});
       this.weatherData.push({type: 'Temerature', value: weatherResponse.data.main.temp + ' °F'}); // TODO: convert to farenheit
       this.weatherData.push({type: 'Humidity', value: weatherResponse.data.main.humidity + ' %'});
-      this.weatherData.push({type: 'Sunrise', value: weatherResponse.data.sys.sunrise }); // TODO: convert to local time
-      this.weatherData.push({type: 'Sunset', value: weatherResponse.data.sys.sunset });
+      this.weatherData.push({type: 'Sunrise', value: moment.unix(weatherResponse.data.sys.sunrise).format("HH:mm") + ' am' }); // TODO: convert to local time
+      this.weatherData.push({type: 'Sunset', value: moment.unix(weatherResponse.data.sys.sunset).format("HH:mm") + ' pm' });
       this.weatherData.push({type: 'Wind speed', value: weatherResponse.data.wind.speed + ' mph'});
       this.weatherData.push({type: 'Wind direction', value: weatherResponse.data.wind.deg + ' degrees' });
       return ;
